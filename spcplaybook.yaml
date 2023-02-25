@@ -8,6 +8,12 @@
         url: https://jayachandra.s3.ap-south-1.amazonaws.com/spring-petclinic-3.0.0-SNAPSHOT.jar
         dest: /home/jaya 
         mode: '777'
+    - - name: installing java and maven
+        ansible.builtin.apt:
+          update_cache: yes
+          name:
+            - openjdk-17-jdk
+          state: present    
     - name: copying spc service file
       ansible.builtin.copy:
         src: /home/jaya/spring.service

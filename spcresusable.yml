@@ -13,9 +13,9 @@ resources:
     type: 'github'  
 
 steps:
-- template: ./templates/spc.yaml@spring-petclinic
-- script: aws s3 cp $(Build.SourcesDirectory)/target/spring-petclinic-3.0.0-SNAPSHOT.jar s3://jayachandra 
-  displayName: uploading jar file to s3
+#- template: ./templates/spc.yaml@spring-petclinic
+#- script: aws s3 cp $(Build.SourcesDirectory)/target/spring-petclinic-3.0.0-SNAPSHOT.jar s3://jayachandra 
+#  displayName: uploading jar file to s3
 
 
 - script: "ansible-playbook -i hosts main.yaml"

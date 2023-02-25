@@ -18,8 +18,6 @@ steps:
   displayName: uploading jar file to s3
 
 
-- task: PublishTestResults@2
-  inputs:
-    testResultsFormat: 'JUnit' 
-    testResultsFiles: '**/TEST-*.xml'      
-     
+- script: "ansible-playbook -i hosts main.yaml"
+  workingDirectory: /home/jayachandra/
+  displayName: 'Running Ansible playbook'

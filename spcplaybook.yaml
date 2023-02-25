@@ -1,0 +1,21 @@
+---
+- name: Spring-petclinic playbook
+  hosts: all
+  become: yes
+  tasks:
+    - name: Downloading jar file
+      ansible.builtin.get_url:
+        url: https://jayachandra.s3.ap-south-1.amazonaws.com/spring-petclinic-3.0.0-SNAPSHOT.jar
+        dest: /home/jayachandra 
+        mode: '777'
+    - name: copying spc service file
+      ansible.builtin.copy:
+        src: /home/jayachandra/spring.service
+        dest: /etc/systemd/system/spring.service
+        mode: "777" 
+    - name: reload,enable,start
+      ansible.builtin.systemd:
+        name: spring.service
+        daemon_reload: yes
+        enabled: true
+        state: started        

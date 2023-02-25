@@ -25,7 +25,7 @@ parameters:
   - name: mavenDirectory
     displayName: mavenpath
     type: string
-    default: /opt/apache-maven-3.6.3
+    default: /opt/apache-maven-3.9.0
   - name: jdkDirectory
     displayName: javapath
     type: string

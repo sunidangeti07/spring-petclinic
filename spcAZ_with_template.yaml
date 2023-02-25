@@ -6,12 +6,12 @@ trigger:
 
 resources:
   repositories:
-  - repository: 'Spc'
+  - repository: 'spring-petclinic'
     endpoint: github.com_jayainjeti
     ref: refs/heads/main 
     name: jayainjeti/spring-petclinic
     type: 'github'  
 
 steps:
-- template: ./templates/spc.yaml@Spc
-  displayName: Fromtemplate    
+- template: ./templates/spc.yaml@spring-petclinic
+     

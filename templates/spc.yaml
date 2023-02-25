@@ -1,0 +1,39 @@
+parameters:
+  - name: goal
+    displayName: maven goal
+    type: string
+    default: 'package'
+    values:
+      - package
+      - clean
+      - install
+      - compile
+  - name: jdkVersion
+    displayName: 'Java Version'
+    type: string
+    default: '1.17'
+  - name: pomFilePath
+    displayName: mavenPOMFile
+    type: string
+    default: 'pom.xml'
+  - name: mavenDirectory
+    displayName: mavenpath
+    type: string
+    default: /opt/apache-maven-3.6.3
+  - name: jdkDirectory
+    displayName: javapath
+    type: string
+    default: /usr/lib/jvm/java-1.17.0-openjdk-amd64  
+
+steps:
+  - task: Maven@3
+    inputs:
+      mavenPOMFile: "${{ parameters.pomFilePath }}"
+      goals: "${{ parameters.goal }}"
+      mavenVersionOption: 'Path'
+      mavenDirectory: "${{ parameters.mavenDirectory }}"
+      publishJUnitResults: yes
+      testResultsFiles: '**/surefire-reports/TEST-*.xml'
+      javaHomeOption: 'Path'
+      jdkVersionOption: "${{ parameters.jdkVersion }}"
+      jdkDirectory: "${{ parameters.jdkDirectory }}"

@@ -1,0 +1,8 @@
+---
+pool: Default
+
+trigger: 
+  - main
+
+steps:
+  - template: ./templates/spc.yaml

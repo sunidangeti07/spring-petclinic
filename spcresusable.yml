@@ -14,4 +14,10 @@ resources:
 
 steps:
 - template: ./templates/spc.yaml@spring-petclinic
+
+
+- task: PublishTestResults@2
+        inputs:
+          testResultsFormat: 'JUnit' 
+          testResultsFiles: '**/TEST-*.xml'      
      

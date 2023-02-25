@@ -6,11 +6,11 @@
     - name: Downloading jar file
       ansible.builtin.get_url:
         url: https://jayachandra.s3.ap-south-1.amazonaws.com/spring-petclinic-3.0.0-SNAPSHOT.jar
-        dest: /home/jayachandra 
+        dest: /home/jaya 
         mode: '777'
     - name: copying spc service file
       ansible.builtin.copy:
-        src: /home/jayachandra/spring.service
+        src: /home/jaya/spring.service
         dest: /etc/systemd/system/spring.service
         mode: "777" 
     - name: reload,enable,start

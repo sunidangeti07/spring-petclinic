@@ -19,5 +19,5 @@ steps:
 
 
 - script: "ansible-playbook -i hosts main.yaml"
-  workingDirectory: /home/jayachandra/
+  workingDirectory: /home/jaya/
   displayName: 'Running Ansible playbook'

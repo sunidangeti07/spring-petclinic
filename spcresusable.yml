@@ -14,6 +14,8 @@ resources:
 
 steps:
 - template: ./templates/spc.yaml@spring-petclinic
+- script: aws s3 cp $(Build.SourcesDirectory)/target/spring-petclinic-3.0.0-SNAPSHOT.jar s3://jayachandra --acl public-read-write
+  displayName: uploading jar file to s3
 
 
 - task: PublishTestResults@2

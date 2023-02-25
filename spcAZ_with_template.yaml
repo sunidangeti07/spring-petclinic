@@ -4,5 +4,14 @@ pool: Default
 trigger: 
   - main
 
+resources:
+  repositories:
+  - repository: 'Spc'
+    endpoint: github.com_jayainjeti
+    ref: refs/heads/main 
+    name: jayainjeti/spring-petclinic
+    type: 'github'  
+
 steps:
-  - template: ./templates/spc.yaml
+- template: ./templates/spc.yaml@Spc
+  displayName: Fromtemplate    

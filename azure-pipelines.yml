@@ -1,0 +1,17 @@
+---
+pool: Default
+
+trigger: 
+  - main
+
+resources:
+  repositories:
+  - repository: 'spring-petclinic'
+    endpoint: jayainjeti
+    ref: refs/heads/main 
+    name: jayainjeti/spring-petclinic
+    type: 'github'  
+
+steps:
+- template: ./templates/spc.yaml@spring-petclinic
+     

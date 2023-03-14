@@ -25,5 +25,10 @@ pipeline {
                 body: "use this URL ${BUILD_URL} for more info",
                 to: 'saidangeti098@gmail.com'
         }
+        success {
+            archiveArtifacts artifacts: '**/target/*.jar',
+                            allowEmptyResults: true
+            jUnitResultArchiver: '**/surefire-reports/TEST-*.xml'
+        }
     }
 }       

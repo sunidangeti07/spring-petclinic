@@ -11,39 +11,43 @@ pipeline {
         stage ('Artifactory Configuration') {
             steps {
                 rtServer (
-                    id: "artifactory-server-id", 
-                    url: "https://talyi.jfrog.io/artifactory",
-                    credentialsId: "admin.jfrog"
+                    id: "ARTIFACTORY_SERVER", 
+                    url: "https://dangetisai.jfrog.io/artifactory",
+                    credentialsId: "JFROG_TOKEN"
                 )
 
                 rtMavenResolver (
-                    id: 'maven-resolver',
+                    id: 'MAVEN_RESOLVER',
                     serverId: 'artifactory-server-id',
-                    releaseRepo: ARTIFACTORY_VIRTUAL_RELEASE_REPO,
-                    snapshotRepo: ARTIFACTORY_VIRTUAL_SNAPSHOT_REPO
+                    releaseRepo: libs-release,
+                    snapshotRepo: libs-snapshot
                 )  
                  
                 rtMavenDeployer (
-                    id: 'maven-deployer',
-                    serverId: 'artifactory-server-id',
-                    releaseRepo: ARTIFACTORY_LOCAL_RELEASE_REPO,
-                    snapshotRepo: ARTIFACTORY_LOCAL_SNAPSHOT_REPO,
-                    threads: 6,
-                    properties: ['BinaryPurpose=Technical-BlogPost', 'Team=DevOps-Acceleration']
+                    id: 'MAVEN_DEPLOYER',
+                    serverId: 'ARTIFACTORY_SERVER',
+                    releaseRepo: libs-release,
+                    snapshotRepo: libs-snapshot
                 )
             }
         }
-        stage('build') {
-            steps{
-                sh 'mvn package'
+        stage('package') {
+            tools {
+                jdk 'JDK_17'
             }
-        }
-        stage("build & SonarQube analysis") {
-          steps {
-              withSonarQubeEnv('SONAR_QUBE_TOKEN') {
-                 sh 'mvn verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=sunidangeti07_jenkins -Dsonar.organization=sunidangeti07'
-              }
-          }
+            steps {
+                rtMavenRun (
+                    tool: 'MAVEN_TOKEN',
+                    pom: 'pom.xml',
+                    goals: 'clean install',
+                    deployerId: "MAVEN_DEPLOYER"
+                    
+                )
+                rtPublishBuildInfo (
+                    serverId: "ARTIFACTORY_SERVER"
+                )
+                //sh "mvn ${params.MAVEN_GOAL}"
+            }
         }
         stage('post build') {
             steps {

@@ -13,6 +13,13 @@ pipeline {
                 sh 'mvn package'
             }
         }
+        stage('post build') {
+            steps {
+                archiveArtifacts artifacts: '**/target/*.jar'
+                            allowEmptyResults: true
+                jUnitResultArchiver: '**/surefire-reports/TEST-*.xml'
+            }
+        }
     }
     post {
         success {
@@ -24,10 +31,6 @@ pipeline {
             mail subject: "Jenkins build of ${JOB_NAME} with id ${BUILD_ID} is failure",
                 body: "use this URL ${BUILD_URL} for more info",
                 to: 'saidangeti098@gmail.com'
-        }
-        success {
-            archiveArtifacts artifacts: '**/target/*.jar',
-            jUnitResultArchiver: '**/surefire-reports/TEST-*.xml'
         }
     }
 }       

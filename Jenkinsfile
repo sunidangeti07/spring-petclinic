@@ -13,24 +13,19 @@ pipeline {
                 sh 'mvn package'
             }
         }
+        stage("build & SonarQube analysis") {
+          steps {
+              withSonarQubeEnv('SONAR_QUBE_TOKEN') {
+                 sh 'mvn verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=sunidangeti07_jenkins'
+              }
+          }
+        }
         stage('post build') {
             steps {
                 archiveArtifacts artifacts: '**/target/spring-petclinic-3.0.0-SNAPSHOT.jar',
                                  onlyIfSuccessful: true
                 junit testResults: '**/surefire-reports/TEST-*.xml'
             }
-        }
-    }
-    post {
-        success {
-            mail subject: "Jenkins build of ${JOB_NAME} with id ${BUILD_ID} is success",
-                body: "use this URL ${BUILD_URL} for more info",
-                to: 'saidangeti098@gmail.com'
-        }
-        failure {
-            mail subject: "Jenkins build of ${JOB_NAME} with id ${BUILD_ID} is failure",
-                body: "use this URL ${BUILD_URL} for more info",
-                to: 'saidangeti098@gmail.com'
         }
     }
 }       

@@ -19,15 +19,15 @@ pipeline {
                 rtMavenDeployer (
                     id: "MAVEN_DEPLOYER",
                     serverId: "ARTIFACTORY_SERVER",
-                    releaseRepo: 'libs-release',
-                    snapshotRepo: 'libs-snapshot'
+                    releaseRepo: 'docker-libs-release',
+                    snapshotRepo: 'docker-libs-snapshot'
                 )
 
                 rtMavenResolver (
                     id: "MAVEN_RESOLVER",
                     serverId: "ARTIFACTORY_SERVER",
-                    releaseRepo: 'libs-release',
-                    snapshotRepo: 'libs-snapshot'
+                    releaseRepo: 'docker-libs-release',
+                    snapshotRepo: 'docker-libs-snapshot'
                 )
             }
         }
@@ -46,7 +46,7 @@ pipeline {
                 rtPublishBuildInfo (
                     serverId: "ARTIFACTORY_SERVER"
                 )
-                //sh "mvn ${params.MAVEN_GOAL}"
+                sh "mvn ${params.MAVEN_GOAL}"
             }
         }
         stage('post build') {

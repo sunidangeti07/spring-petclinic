@@ -8,26 +8,26 @@ pipeline {
                     url: 'https://github.com/sunidangeti07/spring-petclinic.git'
             }
         }
-        stage ('Artifactory Configuration') {
+        stage ('Artifactory configuration') {
             steps {
                 rtServer (
-                    id: "ARTIFACTORY_SERVER", 
-                    url: "https://dangetisai.jfrog.io/artifactory",
-                    credentialsId: "JFROG_TOKEN"
+                    id: "ARTIFACTORY_SERVER",
+                    url: 'https://dangetisai.jfrog.io/artifactory',
+                    credentialsId: 'JFROG_CLOUD'
+                )
+
+                rtMavenDeployer (
+                    id: "MAVEN_DEPLOYER",
+                    serverId: "ARTIFACTORY_SERVER",
+                    releaseRepo: 'libs-release',
+                    snapshotRepo: 'libs-snapshot'
                 )
 
                 rtMavenResolver (
-                    id: 'MAVEN_RESOLVER',
-                    serverId: 'ARTIFACTORY_SERVER',
-                    releaseRepo: libs-release,
-                    snapshotRepo: libs-snapshot
-                )  
-                 
-                rtMavenDeployer (
-                    id: 'MAVEN_DEPLOYER',
-                    serverId: 'ARTIFACTORY_SERVER',
-                    releaseRepo: libs-release,
-                    snapshotRepo: libs-snapshot
+                    id: "MAVEN_RESOLVER",
+                    serverId: "ARTIFACTORY_SERVER",
+                    releaseRepo: 'libs-release',
+                    snapshotRepo: 'libs-snapshot'
                 )
             }
         }

@@ -16,7 +16,7 @@ pipeline {
         stage("build & SonarQube analysis") {
           steps {
               withSonarQubeEnv('SONAR_QUBE_TOKEN') {
-                 sh 'mvn verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=sunidangeti07_jenkins'
+                 sh 'mvn verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=sunidangeti07_jenkins -Dsonar.organization=sunidangeti07'
               }
           }
         }

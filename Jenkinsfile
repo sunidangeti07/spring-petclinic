@@ -27,7 +27,6 @@ pipeline {
         }
         success {
             archiveArtifacts artifacts: '**/target/*.jar',
-                            allowEmptyResults: true
             jUnitResultArchiver: '**/surefire-reports/TEST-*.xml'
         }
     }

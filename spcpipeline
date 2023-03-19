@@ -1,5 +1,5 @@
 pipeline{
-    agent{ label '' }
+    agent{ label 'sai_1' }
     triggers { pollSCM (' * * * * *' )}
     stages{
         stage('vcs'){
@@ -30,12 +30,6 @@ pipeline{
         stage('push into s3') {
             steps {
                 sh 'aws s3 cp target/workspace/spring-petclinic-3.0.0-SNAPSHOT.jar s3://sai-22'
-            }
-        }
-        stage('deploy with ansible') {
-            agent { label 'ansi_1'}
-            steps{
-                sh 'ansible-playbook -i hosts spcansible.yml'
             }
         }
     }

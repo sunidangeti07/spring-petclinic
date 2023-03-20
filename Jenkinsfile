@@ -1,6 +1,5 @@
 pipeline {
-    agent { label'sai_1' } 
-    triggers { pollSCM('* * * * *') }
+    agent { label 'sai_1' } 
     stages {
         stage('vcs') {
             steps {
@@ -8,53 +7,33 @@ pipeline {
                     url: 'https://github.com/sunidangeti07/spring-petclinic.git'
             }
         }
-        stage ('Artifactory configuration') {
+        stage('sonarqube analysis') {
             steps {
-                rtServer (
-                    id: "ARTIFACTORY_SERVER",
-                    url: 'https://dangetisai.jfrog.io/artifactory',
-                    credentialsId: 'JFROG_CLOUD'
-                )
-
-                rtMavenDeployer (
-                    id: "MAVEN_DEPLOYER",
-                    serverId: "ARTIFACTORY_SERVER",
-                    releaseRepo: 'docker-libs-release',
-                    snapshotRepo: 'docker-libs-snapshot'
-                )
-
-                rtMavenResolver (
-                    id: "MAVEN_RESOLVER",
-                    serverId: "ARTIFACTORY_SERVER",
-                    releaseRepo: 'docker-libs-release',
-                    snapshotRepo: 'docker-libs-snapshot'
-                )
+                withSonarQubeEnv('sonar_name') {
+                      // Optionally use a Maven environment you've configured already
+                    withMaven(maven:'Maven 3.5') {
+                        sh 'mvn verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=sunidangeti07_jenkins3 -Dsonar.organization=sunidangeti07'
+                    }    
+                }
             }
         }
-        stage('package') {
-            tools {
-                jdk 'JDK_17'
-            }
-            steps {
-                rtMavenRun (
-                    tool: 'MAVEN_TOKEN',
-                    pom: 'pom.xml',
-                    goals: 'clean install',
-                    deployerId: "MAVEN_DEPLOYER"
-                    
-                )
-                rtPublishBuildInfo (
-                    serverId: "ARTIFACTORY_SERVER"
-                )
-                sh "mvn ${params.MAVEN_GOAL}"
+        stage('build') {
+            steps{
+                sh 'mvn package'
             }
         }
-        stage('post build') {
+        stage('publish') {
+            steps{
+        archiveArtifacts artifacts: '**/target/spring-petclinic-3.0.0-SNAPSHOT.jar
+                        onliIfSuccessful: True 
+                    junit testResults: '**/surefire-reports/TEST-*.xml'
+            } 
+        } 
+        stage('push to s3 bucket) {
             steps {
-                archiveArtifacts artifacts: '**/target/spring-petclinic-3.0.0-SNAPSHOT.jar',
-                                 onlyIfSuccessful: true
-                junit testResults: '**/surefire-reports/TEST-*.xml'
+                sh 'aws s3 cp /target/spring-petclinic-3.0.0-SNAPSHOT.jar s3://sai-22'
             }
-        }
+        } 
+        
     }
-}       
+}  

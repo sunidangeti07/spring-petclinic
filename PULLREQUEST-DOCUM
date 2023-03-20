@@ -1,0 +1,25 @@
+GIT PULL REQUEST
+-----------------
+* Install 'git pull request builder' plugin  in the manage plugin
+* ![preview](IMAGES/pillreq1.png)
+* And give git token in the 'manage credentials' section.
+* ![preview](IMAGES/pillreq2.png)
+* now go to "configure system" and give the information about the 'git pull request builder' section.
+* ![preview](IMAGES/pillreq4.png)
+* Create a webhook in github and authenticate with jenkins.
+* Now in github we have to change the repositary settings to trigger the jenkins job when any changes are done.
+* ![preview](IMAGES/pillreq3.png)
+* Create the webhook in github
+* ![preview](IMAGES/pillreq5.png)
+* ![preview](IMAGES/pillreq6.png)
+* ![preview](IMAGES/pillreq7.png)
+* ![preview](IMAGES/pillreq8.png)
+* Now create project in freestyle model 
+* ![preview](IMAGES/pillreq9.png)
+* ![preview](IMAGES/pillreq10.png)
+* ![preview](IMAGES/pillreq10.png)
+* ![preview](IMAGES/pillreq12.png)
+* ![preview](IMAGES/pillreq13.png)
+* once the pull request was done,commit some chamges andcheck the job is triggered or not. 
+* [refer hers](https://devopscube.com/jenkins-build-trigger-github-pull-request/) for the step by step guidekines.
+* for plugin website [refer here](https://plugins.jenkins.io/ghprb/)

@@ -38,5 +38,11 @@ pipeline{
                 sh 'ansible-playbook -i hosts spcansible.yml'
             }
         }
+        satge('deploying with ansible') {
+            steps {
+                sh 'ansible-playbook -i hosts spc.yml'
+            }
+        }         
+
     }
 }
